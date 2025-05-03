@@ -1,14 +1,15 @@
 # Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-WORKDIR /app
+WORKDIR /src
 
 # Copy csproj and restore
-COPY lgapi.csproj ./
+COPY lgapi/lgapi.csproj ./lgapi/
+WORKDIR /src/lgapi
 RUN dotnet restore
 
-# Copy the rest of the code
-COPY . ./
-RUN dotnet publish -c Release -o out
+# Copy everything and publish
+COPY lgapi/. ./
+RUN dotnet publish -c Release -o /app/out
 
 # Stage 2: Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
