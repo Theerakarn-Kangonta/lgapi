@@ -1,18 +1,23 @@
-# Stage 1: Build
+# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-WORKDIR /src
+WORKDIR /app
 
 # Copy csproj and restore
-COPY lgapi/lgapi.csproj ./lgapi/
-WORKDIR /src/lgapi
+COPY *.csproj ./
 RUN dotnet restore
 
-# Copy everything and publish
-COPY lgapi/. ./
-RUN dotnet publish -c Release -o /app/out
+# Copy the entire project and build
+COPY . ./
+RUN dotnet publish -c Release -o /out
 
-# Stage 2: Runtime
+# Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
-COPY --from=build /app/out ./
+
+COPY --from=build /out ./
+
+# Expose port (used by Railway)
+EXPOSE 8080
+
+# Start the application
 ENTRYPOINT ["dotnet", "lgapi.dll"]
