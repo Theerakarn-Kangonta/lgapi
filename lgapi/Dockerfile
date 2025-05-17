@@ -1,4 +1,4 @@
-# Base image
+﻿# Base image
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 8080
@@ -7,10 +7,11 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-COPY ["lgapi.csproj", "./"]
+# 👇 FIXED: Include path to .csproj
+COPY lgapi/lgapi.csproj ./ 
 RUN dotnet restore "lgapi.csproj"
 
-COPY . .
+COPY lgapi/. ./
 RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
 
 # Final image
