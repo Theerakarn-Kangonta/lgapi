@@ -20,5 +20,9 @@ namespace lgapi.Models
 
         [MaxLength(1000)]
         public string? ImageUrl { get; set; }
+
+        public int? Price { get; set; }
+
+        public int? MonthSubscription { get; set; }
     }
 }

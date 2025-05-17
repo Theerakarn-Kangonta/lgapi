@@ -16,10 +16,13 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: corsPolicyName,
         policy =>
         {
-            policy.WithOrigins("https://lg-website-sigma.vercel.app/") // or your deployed Angular domain
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials(); // Optional, if using cookies/auth
+            policy.WithOrigins(
+                    "http://localhost:4200", // Angular local dev server
+                    "https://lg-website-sigma.vercel.app" // Deployed frontend
+                )
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials(); // Only needed if using cookies/auth
         });
 });
 
