@@ -1,8 +1,11 @@
 using lgapi.Models;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
-
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    Args = args,
+    WebRootPath = "wwwroot"
+});
 
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -27,7 +30,6 @@ builder.Services.AddCors(options =>
 });
 
 
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -41,6 +43,8 @@ app.UseCors(corsPolicyName);
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 app.UseAuthentication(); // If using JWT or cookies
 
 app.UseAuthorization();
